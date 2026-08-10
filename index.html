@@ -7,49 +7,99 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
-    <div class="max-w-2xl mx-auto p-4 sm:p-6">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-blue-600 tracking-tight">Loopia 智慧二手拍賣</h1>
-            <p class="text-sm text-slate-500 mt-1">拍照上傳，讓 Gemini AI 幫你秒速生成商品文案與定價！</p>
+    <div class="max-w-4xl mx-auto p-4 sm:p-6">
+        <header class="flex flex-col sm:flex-row justify-between items-center mb-8 border-b pb-4 gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-blue-600 tracking-tight">Loopia 智慧二手拍賣</h1>
+                <p class="text-sm text-slate-500 mt-1">AI 智慧辨識，在地二手好物輕鬆淘！</p>
+            </div>
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div class="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-sm flex items-center gap-2 shadow-sm">
+                    <span>📍 地區：</span>
+                    <select id="regionFilter" class="bg-transparent font-medium text-blue-600 focus:outline-none cursor-pointer">
+                        <option value="全部">全台灣</option>
+                        <option value="台北市">台北市</option>
+                        <option value="新北市">新北市</option>
+                        <option value="台中市">台中市</option>
+                        <option value="高雄市">高雄市</option>
+                        <option value="其他地區">其他地區</option>
+                    </select>
+                </div>
+                <button id="memberBtn" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-xl transition shadow-sm cursor-pointer">
+                    👤 會員中心
+                </button>
+            </div>
         </header>
 
-        <!-- 上傳表單 -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-            <h2 class="text-lg font-bold mb-4 flex items-center gap-2">📸 AI 智慧上架</h2>
-            <form id="uploadForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">選擇商品照片</label>
-                    <input type="file" id="imageInput" accept="image/*" required class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 h-fit">
+                <h2 class="text-base font-bold mb-4 flex items-center gap-2">📸 AI 智慧上架</h2>
+                <form id="uploadForm" class="space-y-4 text-sm">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">商品照片</label>
+                        <input type="file" id="imageInput" accept="image/*" required class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">商品所在地</label>
+                        <select id="itemRegion" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                            <option value="台北市">台北市</option>
+                            <option value="新北市">新北市</option>
+                            <option value="台中市">台中市</option>
+                            <option value="高雄市">高雄市</option>
+                            <option value="其他地區">其他地區</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">聯絡方式 (LINE / 電話)</label>
+                        <input type="text" id="sellerContact" placeholder="請輸入聯絡方式" required class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-md shadow-blue-500/20 cursor-pointer">
+                        ✨ AI 一鍵上架
+                    </button>
+                </form>
+                <div id="loading" class="hidden mt-3 text-center text-xs text-blue-600 font-medium animate-pulse">
+                    🤖 AI 正在辨識商品中，請稍候...
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">聯絡方式 (例如 LINE ID / 電話)</label>
-                    <input type="text" id="sellerContact" placeholder="請輸入您的聯絡方式" required class="w-full px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div class="md:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">🔥 熱門二手商品</h2>
+                    <span id="productCount" class="text-xs text-slate-400 font-medium">載入中...</span>
                 </div>
-                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-lg shadow-blue-500/20 cursor-pointer">
-                    ✨ 開始 AI 智慧上架
-                </button>
-            </form>
-            <div id="loading" class="hidden mt-4 text-center text-blue-600 font-medium animate-pulse">
-                🤖 AI 正在努力辨識商品中，請稍候...
+                <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <p class="text-slate-400 text-sm col-span-2 text-center py-8">正在載入商品列表...</p>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- 商品列表 -->
-        <section>
-            <h2 class="text-xl font-bold mb-4">🔥 熱門二手商品</h2>
-            <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <p class="text-slate-400 text-sm col-span-2 text-center py-4">正在載入商品列表...</p>
-            </div>
-        </section>
+    <div id="memberModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
+            <h3 class="text-lg font-bold mb-2">👤 會員中心</h3>
+            <p class="text-sm text-slate-600 mb-4">歡迎使用 Loopia！您目前為訪客身分，可以直接拍照上架您的二手好物。</p>
+            <button id="closeModal" class="w-full bg-slate-200 hover:bg-slate-300 font-bold py-2 rounded-xl text-sm cursor-pointer">關閉</button>
+        </div>
     </div>
 
     <script>
         const form = document.getElementById('uploadForm');
         const imageInput = document.getElementById('imageInput');
+        const itemRegion = document.getElementById('itemRegion');
         const sellerContactInput = document.getElementById('sellerContact');
         const submitBtn = document.getElementById('submitBtn');
         const loading = document.getElementById('loading');
         const productList = document.getElementById('productList');
+        const regionFilter = document.getElementById('regionFilter');
+        const productCount = document.getElementById('productCount');
+        const memberBtn = document.getElementById('memberBtn');
+        const memberModal = document.getElementById('memberModal');
+        const closeModal = document.getElementById('closeModal');
+
+        let allProducts = [];
+
+        memberBtn.addEventListener('click', () => memberModal.classList.remove('hidden'));
+        closeModal.addEventListener('click', () => memberModal.classList.add('hidden'));
 
         function convertBase64(file) {
             return new Promise((resolve, reject) => {
@@ -60,29 +110,50 @@
             });
         }
 
+        function renderProducts(products) {
+            const selectedRegion = regionFilter.value;
+            const filtered = selectedRegion === '全部' 
+                ? products 
+                : products.filter(p => p.region === selectedRegion);
+
+            productCount.textContent = `共 ${filtered.length} 件商品`;
+
+            if (filtered.length > 0) {
+                productList.innerHTML = filtered.map(p => `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-base text-slate-900">${p.title}</h3>
+                                <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded-md font-medium">${p.region || '全台灣'}</span>
+                            </div>
+                            <p class="text-blue-600 font-extrabold text-lg mb-2">NT$ ${p.price}</p>
+                            <p class="text-slate-600 text-xs mb-4 line-clamp-3">${p.description}</p>
+                        </div>
+                        <div class="border-t pt-2 flex justify-between items-center text-xs text-slate-500">
+                            <span>聯絡：${p.seller_contact}</span>
+                            <span class="text-slate-400">${new Date(p.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                productList.innerHTML = '<p class="text-slate-400 text-sm col-span-2 text-center py-8">此地區目前沒有商品，趕快來上架第一件吧！</p>';
+            }
+        }
+
+        regionFilter.addEventListener('change', () => renderProducts(allProducts));
+
         async function fetchProducts() {
             try {
                 const res = await fetch('/api/products');
                 const result = await res.json();
-                if (result.success && result.data.length > 0) {
-                    productList.innerHTML = result.data.map(p => `
-                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-bold text-lg text-slate-900 mb-1">${p.title}</h3>
-                                <p class="text-blue-600 font-extrabold text-xl mb-2">NT$ ${p.price}</p>
-                                <p class="text-slate-600 text-sm mb-4 line-clamp-3">${p.description}</p>
-                            </div>
-                            <div class="border-t pt-3 flex justify-between items-center text-xs text-slate-500">
-                                <span>聯絡：${p.seller_contact}</span>
-                                <span class="text-slate-400">${new Date(p.created_at).toLocaleDateString()}</span>
-                            </div>
-                        </div>
-                    `).join('');
+                if (result.success) {
+                    allProducts = result.data;
+                    renderProducts(allProducts);
                 } else {
-                    productList.innerHTML = '<p class="text-slate-400 text-sm col-span-2 text-center py-4">目前沒有任何商品，趕快來上架第一件吧！</p>';
+                    productList.innerHTML = '<p class="text-slate-400 text-sm col-span-2 text-center py-8">目前沒有任何商品</p>';
                 }
             } catch (e) {
-                productList.innerHTML = '<p class="text-red-400 text-sm col-span-2 text-center py-4">無法載入商品列表</p>';
+                productList.innerHTML = '<p class="text-red-400 text-sm col-span-2 text-center py-8">無法載入商品列表</p>';
             }
         }
 
@@ -90,6 +161,7 @@
             e.preventDefault();
             const file = imageInput.files[0];
             const sellerContact = sellerContactInput.value;
+            const region = itemRegion.value;
             if (!file) return alert('請選擇圖片');
 
             submitBtn.disabled = true;
@@ -100,7 +172,7 @@
                 const res = await fetch('/api/create-product', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ imageBase64, sellerContact })
+                    body: JSON.stringify({ imageBase64, sellerContact, region })
                 });
                 const result = await res.json();
                 if (result.success) {
