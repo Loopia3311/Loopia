@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const { GoogleGenAI } = require('@google/genai');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
@@ -13,9 +12,137 @@ app.use(express.json({ limit: '15mb' }));
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// 0. 讓首頁直接正確顯示 HTML 畫面
+// 0. 直接回傳漂亮的 HTML 介面（徹底解決 Vercel 讀不到檔案的問題）
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loopia 智慧二手拍賣</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+    <div class="max-w-2xl mx-auto p-4 sm:p-6">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-blue-600 tracking-tight">Loopia 智慧二手拍賣</h1>
+            <p class="text-sm text-slate-500 mt-1">拍照上傳，讓 Gemini AI 幫你秒速生成商品文案與定價！</p>
+        </header>
+
+        <!-- 上傳表單 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+            <h2 class="text-lg font-bold mb-4 flex items-center gap-2">📸 AI 智慧上架</h2>
+            <form id="uploadForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">選擇商品照片</label>
+                    <input type="file" id="imageInput" accept="image/*" required class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">聯絡方式 (例如 LINE ID / 電話)</label>
+                    <input type="text" id="sellerContact" placeholder="請輸入您的聯絡方式" required class="w-full px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-lg shadow-blue-500/20 cursor-pointer">
+                    ✨ 開始 AI 智慧上架
+                </button>
+            </form>
+            <div id="loading" class="hidden mt-4 text-center text-blue-600 font-medium animate-pulse">
+                🤖 AI 正在努力辨識商品中，請稍候...
+            </div>
+        </div>
+
+        <!-- 商品列表 -->
+        <section>
+            <h2 class="text-xl font-bold mb-4">🔥 熱門二手商品</h2>
+            <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <p class="text-slate-400 text-sm col-span-2 text-center py-4">正在載入商品列表...</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const imageInput = document.getElementById('imageInput');
+        const sellerContactInput = document.getElementById('sellerContact');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const productList = document.getElementById('productList');
+
+        // 轉換圖片為 Base64
+        function convertBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // 載入商品列表
+        async function fetchProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const result = await res.json();
+                if (result.success && result.data.length > 0) {
+                    productList.innerHTML = result.data.map(p => \`
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900 mb-1">\${p.title}</h3>
+                                <p class="text-blue-600 font-extrabold text-xl mb-2">NT$ \${p.price}</p>
+                                <p class="text-slate-600 text-sm mb-4 line-clamp-3">\${p.description}</p>
+                            </div>
+                            <div class="border-t pt-3 flex justify-between items-center text-xs text-slate-500">
+                                <span>聯絡：\${p.seller_contact}</span>
+                                <span class="text-slate-400">\${new Date(p.created_at).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    \`).join('');
+                } else {
+                    productList.innerHTML = '<p class="text-slate-400 text-sm col-span-2 text-center py-4">目前沒有任何商品，趕快來上架第一件吧！</p>';
+                }
+            } catch (e) {
+                productList.innerHTML = '<p class="text-red-400 text-sm col-span-2 text-center py-4">無法載入商品列表</p>';
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = imageInput.files[0];
+            const sellerContact = sellerContactInput.value;
+            if (!file) return alert('請選擇圖片');
+
+            submitBtn.disabled = true;
+            loading.classList.remove('hidden');
+
+            try {
+                const imageBase64 = await convertBase64(file);
+                const res = await fetch('/api/create-product', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageBase64, sellerContact })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('上架成功！AI 已自動幫您生成文案。');
+                    form.reset();
+                    fetchProducts();
+                } else {
+                    alert('上架失敗：' + result.error);
+                }
+            } catch (err) {
+                alert('發生錯誤：' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                loading.classList.add('hidden');
+            }
+        });
+
+        fetchProducts();
+    </script>
+</body>
+</html>
+    `);
 });
 
 // 1. AI 辨識與商品上架 API
@@ -75,9 +202,5 @@ app.get('/api/products', async (req, res) => {
     if (error) return res.status(500).json({ success: false, error: error.message });
     res.json({ success: true, data });
 });
-
-// 如果是在本地測試才需要這行，但留在這不影響 Vercel
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Loopia 後端正在 port ${PORT} 運行`));
 
 module.exports = app;
