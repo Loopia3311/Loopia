@@ -3,82 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loopia 智慧二手拍賣</title>
+    <title>Loopia 溫馨二手市集</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
+<body class="bg-[#FAF8F5] text-stone-700 min-h-screen font-sans">
     <div class="max-w-4xl mx-auto p-4 sm:p-6">
-        <header class="flex flex-col sm:flex-row justify-between items-center mb-8 border-b pb-4 gap-4">
+        <!-- 頂部導覽列：點擊 Logo 回首頁 -->
+        <header class="flex flex-col sm:flex-row justify-between items-center mb-8 border-b border-stone-200 pb-4 gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-blue-600 tracking-tight">Loopia 智慧二手拍賣</h1>
-                <p class="text-sm text-slate-500 mt-1">AI 智慧辨識，在地二手好物輕鬆淘！</p>
+                <a href="#" id="homeLogo" class="group flex items-center gap-2 cursor-pointer">
+                    <h1 class="text-3xl font-extrabold text-amber-700 tracking-tight group-hover:opacity-90 transition">Loopia 溫馨二手市集</h1>
+                </a>
+                <p class="text-sm text-stone-500 mt-1">讓好物溫柔循環，AI 幫你輕鬆賦予它新生命 🌿</p>
             </div>
+            
             <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <div class="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-sm flex items-center gap-2 shadow-sm">
+                <div class="bg-white px-3 py-2 rounded-2xl border border-stone-200 text-sm flex items-center gap-2 shadow-xs">
                     <span>📍 地區：</span>
-                    <select id="regionFilter" class="bg-transparent font-medium text-blue-600 focus:outline-none cursor-pointer">
+                    <select id="regionFilter" class="bg-transparent font-medium text-amber-800 focus:outline-none cursor-pointer">
                         <option value="全部">全台灣</option>
-                        <option value="台北市">台北市</option>
-                        <option value="新北市">新北市</option>
-                        <option value="台中市">台中市</option>
-                        <option value="高雄市">高雄市</option>
-                        <option value="其他地區">其他地區</option>
+                        <optgroup label="北部">
+                            <option value="基隆市">基隆市</option>
+                            <option value="台北市">台北市</option>
+                            <option value="新北市">新北市</option>
+                            <option value="桃園市">桃園市</option>
+                            <option value="新竹市">新竹市</option>
+                            <option value="新竹縣">新竹縣</option>
+                            <option value="宜蘭縣">宜蘭縣</option>
+                        </optgroup>
+                        <optgroup label="中部">
+                            <option value="苗栗縣">苗栗縣</option>
+                            <option value="台中市">台中市</option>
+                            <option value="彰化縣">彰化縣</option>
+                            <option value="南投縣">南投縣</option>
+                            <option value="雲林縣">雲林縣</option>
+                        </optgroup>
+                        <optgroup label="南部">
+                            <option value="嘉義市">嘉義市</option>
+                            <option value="嘉義縣">嘉義縣</option>
+                            <option value="台南市">台南市</option>
+                            <option value="高雄市">高雄市</option>
+                            <option value="屏東縣">屏東縣</option>
+                        </optgroup>
+                        <optgroup label="東部與離島">
+                            <option value="花蓮縣">花蓮縣</option>
+                            <option value="台東縣">台東縣</option>
+                            <option value="澎湖縣">澎湖縣</option>
+                            <option value="金門縣">金門縣</option>
+                            <option value="連江縣">連江縣</option>
+                        </optgroup>
                     </select>
                 </div>
-                <button id="memberBtn" class="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-xl transition shadow-sm cursor-pointer">
+                <button id="memberBtn" class="bg-stone-800 hover:bg-stone-900 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl transition shadow-xs cursor-pointer">
                     👤 會員中心
                 </button>
             </div>
         </header>
 
+        <!-- 主要內容區 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 h-fit">
-                <h2 class="text-base font-bold mb-4 flex items-center gap-2">📸 AI 智慧上架</h2>
+            <!-- 左側：溫暖風格的上架表單 -->
+            <div class="md:col-span-1 bg-white rounded-3xl shadow-xs border border-stone-200/80 p-5 h-fit">
+                <h2 class="text-base font-bold mb-4 flex items-center gap-2 text-stone-800">📸 AI 溫馨上架</h2>
                 <form id="uploadForm" class="space-y-4 text-sm">
                     <div>
-                        <label class="block font-medium text-slate-700 mb-1">商品照片</label>
-                        <input type="file" id="imageInput" accept="image/*" required class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                        <label class="block font-medium text-stone-600 mb-1">商品照片</label>
+                        <input type="file" id="imageInput" accept="image/*" required class="block w-full text-xs text-stone-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-800 hover:file:bg-amber-100 cursor-pointer">
                     </div>
                     <div>
-                        <label class="block font-medium text-slate-700 mb-1">商品所在地</label>
-                        <select id="itemRegion" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                        <label class="block font-medium text-stone-600 mb-1">商品所在地</label>
+                        <select id="itemRegion" class="w-full px-3 py-2 rounded-2xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none bg-stone-50/50">
                             <option value="台北市">台北市</option>
                             <option value="新北市">新北市</option>
+                            <option value="桃園市">桃園市</option>
                             <option value="台中市">台中市</option>
+                            <option value="台南市">台南市</option>
                             <option value="高雄市">高雄市</option>
-                            <option value="其他地區">其他地區</option>
+                            <option value="基隆市">基隆市</option>
+                            <option value="新竹市">新竹市</option>
+                            <option value="新竹縣">新竹縣</option>
+                            <option value="苗栗縣">苗栗縣</option>
+                            <option value="彰化縣">彰化縣</option>
+                            <option value="南投縣">南投縣</option>
+                            <option value="雲林縣">雲林縣</option>
+                            <option value="嘉義市">嘉義市</option>
+                            <option value="嘉義縣">嘉義縣</option>
+                            <option value="屏東縣">屏東縣</option>
+                            <option value="宜蘭縣">宜蘭縣</option>
+                            <option value="花蓮縣">花蓮縣</option>
+                            <option value="台東縣">台東縣</option>
+                            <option value="澎湖縣">澎湖縣</option>
+                            <option value="金門縣">金門縣</option>
+                            <option value="連江縣">連江縣</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-medium text-slate-700 mb-1">聯絡方式 (LINE / 電話)</label>
-                        <input type="text" id="sellerContact" placeholder="請輸入聯絡方式" required class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <label class="block font-medium text-stone-600 mb-1">聯絡方式 (LINE ID / 電話)</label>
+                        <input type="text" id="sellerContact" placeholder="例如：line_id123" required class="w-full px-3 py-2 rounded-2xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none bg-stone-50/50">
                     </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-md shadow-blue-500/20 cursor-pointer">
-                        ✨ AI 一鍵上架
+                    <button type="submit" id="submitBtn" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-4 rounded-2xl transition shadow-sm shadow-amber-900/10 cursor-pointer">
+                        ✨ 讓 AI 生成文案並上架
                     </button>
                 </form>
-                <div id="loading" class="hidden mt-3 text-center text-xs text-blue-600 font-medium animate-pulse">
-                    🤖 AI 正在辨識商品中，請稍候...
+                <div id="loading" class="hidden mt-3 text-center text-xs text-amber-700 font-medium animate-pulse">
+                    🤖 AI 正在細心觀察您的商品，請稍候...
                 </div>
             </div>
 
+            <!-- 右側：商品列表展示 -->
             <div class="md:col-span-2">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold">🔥 熱門二手商品</h2>
-                    <span id="productCount" class="text-xs text-slate-400 font-medium">載入中...</span>
+                    <h2 class="text-xl font-bold text-stone-800">🧸 溫馨好物牆</h2>
+                    <span id="productCount" class="text-xs text-stone-400 font-medium">載入中...</span>
                 </div>
                 <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <p class="text-slate-400 text-sm col-span-2 text-center py-8">正在載入商品列表...</p>
+                    <p class="text-stone-400 text-sm col-span-2 text-center py-8">正在把好物搬上架...</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="memberModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
-            <h3 class="text-lg font-bold mb-2">👤 會員中心</h3>
-            <p class="text-sm text-slate-600 mb-4">歡迎使用 Loopia！您目前為訪客身分，可以直接拍照上架您的二手好物。</p>
-            <button id="closeModal" class="w-full bg-slate-200 hover:bg-slate-300 font-bold py-2 rounded-xl text-sm cursor-pointer">關閉</button>
+    <!-- 會員中心互動視窗 -->
+    <div id="memberModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-xl border border-stone-100">
+            <h3 class="text-lg font-bold mb-2 text-stone-800">👤 關於您的會員身分</h3>
+            <p class="text-sm text-stone-600 mb-6 leading-relaxed">歡迎來到 Loopia！目前您以親切的訪客身分瀏覽，您可以隨時免費上架您的二手好物，讓它找到疼愛它的新主人。</p>
+            <button id="closeModal" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold py-2.5 rounded-2xl text-sm cursor-pointer transition">我知道了</button>
         </div>
     </div>
 
@@ -95,8 +145,17 @@
         const memberBtn = document.getElementById('memberBtn');
         const memberModal = document.getElementById('memberModal');
         const closeModal = document.getElementById('closeModal');
+        const homeLogo = document.getElementById('homeLogo');
 
         let allProducts = [];
+
+        // 點擊 Logo 回首頁（重設篩選並滾動到最上方）
+        homeLogo.addEventListener('click', (e) => {
+            e.preventDefault();
+            regionFilter.value = '全部';
+            renderProducts(allProducts);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         memberBtn.addEventListener('click', () => memberModal.classList.remove('hidden'));
         closeModal.addEventListener('click', () => memberModal.classList.add('hidden'));
@@ -110,6 +169,23 @@
             });
         }
 
+        // 刪除商品功能
+        async function deleteProduct(id) {
+            if (!confirm('確定要將這件商品從市集下架嗎？')) return;
+            try {
+                const res = await fetch(`/api/delete-product?id=${id}`, { method: 'DELETE' });
+                const result = await res.json();
+                if (result.success) {
+                    alert('已成功下架！');
+                    fetchProducts();
+                } else {
+                    alert('下架失敗：' + result.error);
+                }
+            } catch (err) {
+                alert('發生錯誤：' + err.message);
+            }
+        }
+
         function renderProducts(products) {
             const selectedRegion = regionFilter.value;
             const filtered = selectedRegion === '全部' 
@@ -120,23 +196,26 @@
 
             if (filtered.length > 0) {
                 productList.innerHTML = filtered.map(p => `
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="bg-white rounded-3xl shadow-xs border border-stone-200/80 p-5 flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-bold text-base text-slate-900">${p.title}</h3>
-                                <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded-md font-medium">${p.region || '全台灣'}</span>
+                                <h3 class="font-bold text-base text-stone-900">${p.title}</h3>
+                                <span class="bg-amber-50 text-amber-800 text-xs px-2.5 py-1 rounded-xl font-medium">${p.region || '全台灣'}</span>
                             </div>
-                            <p class="text-blue-600 font-extrabold text-lg mb-2">NT$ ${p.price}</p>
-                            <p class="text-slate-600 text-xs mb-4 line-clamp-3">${p.description}</p>
+                            <p class="text-amber-700 font-extrabold text-lg mb-2">NT$ ${p.price}</p>
+                            <p class="text-stone-600 text-xs mb-4 line-clamp-3 leading-relaxed">${p.description}</p>
                         </div>
-                        <div class="border-t pt-2 flex justify-between items-center text-xs text-slate-500">
+                        <div class="border-t border-stone-100 pt-3 flex justify-between items-center text-xs text-stone-500">
                             <span>聯絡：${p.seller_contact}</span>
-                            <span class="text-slate-400">${new Date(p.created_at).toLocaleDateString()}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-stone-400">${new Date(p.created_at).toLocaleDateString()}</span>
+                                <button onclick="deleteProduct('${p.id}')" class="text-rose-400 hover:text-rose-600 font-medium px-1.5 py-0.5 rounded cursor-pointer transition">下架</button>
+                            </div>
                         </div>
                     </div>
                 `).join('');
             } else {
-                productList.innerHTML = '<p class="text-slate-400 text-sm col-span-2 text-center py-8">此地區目前沒有商品，趕快來上架第一件吧！</p>';
+                productList.innerHTML = '<p class="text-stone-400 text-sm col-span-2 text-center py-12">這裡還沒有這個地區的溫馨好物，來上架第一件吧！</p>';
             }
         }
 
@@ -150,7 +229,7 @@
                     allProducts = result.data;
                     renderProducts(allProducts);
                 } else {
-                    productList.innerHTML = '<p class="text-slate-400 text-sm col-span-2 text-center py-8">目前沒有任何商品</p>';
+                    productList.innerHTML = '<p class="text-stone-400 text-sm col-span-2 text-center py-8">目前沒有任何商品</p>';
                 }
             } catch (e) {
                 productList.innerHTML = '<p class="text-red-400 text-sm col-span-2 text-center py-8">無法載入商品列表</p>';
@@ -176,7 +255,7 @@
                 });
                 const result = await res.json();
                 if (result.success) {
-                    alert('上架成功！AI 已自動幫您生成文案。');
+                    alert('上架成功！AI 已為您生成溫馨文案。');
                     form.reset();
                     fetchProducts();
                 } else {
