@@ -6,18 +6,34 @@
     <title>Loopia 路比亞 - AI 智慧二手市集</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // 台灣縣市與鄉鎮區對照表
+        // 全台 22 縣市與完整鄉鎮市區對照表
         const taiwanDistricts = {
             "台北市": ["中正區", "大同區", "中山區", "松山區", "大安區", "萬華區", "信義區", "士林區", "北投區", "內湖區", "南港區", "文山區"],
-            "高雄市": ["鹽埕區", "鼓山區", "左營區", "楠梓區", "三民區", "前金區", "新興區", "前鎮區", "旗津區", "小港區", "鳳山區", "林園區", "大寮區", "大樹區", "大社區", "仁武區", "鳥松區", "岡山區", "橋頭區", "燕巢區", "田寮區", "阿蓮區", "路竹區", "湖內區", "茄萣區", "永安區", "彌陀區", "梓官區", "旗山區", "美濃區", "六龜區", "甲仙區", "杉林區", "內門區", "茂林區", "桃源區", "那瑪夏區"],
-            "台中市": ["中區", "東區", "南區", "西區", "北區", "西屯區", "南屯區", "北屯區", "豐原區", "大里區", "太平區", "清水區", "沙鹿區", "梧棲區", "后里區", "神岡區", "潭子區", "大雅區", "新社區", "石岡區", "東勢區", "和平區", "新社區", "大肚區", "沙鹿區", "龍井區", "沙鹿區", "霧峰區", "烏日區", "大甲區", "外埔區", "大安區"],
             "新北市": ["板橋區", "三重區", "中和區", "永和區", "新莊區", "新店區", "樹林區", "鶯歌區", "三峽區", "淡水區", "汐止區", "瑞芳區", "土城區", "蘆洲區", "五股區", "泰山區", "林口區", "深坑區", "石碇區", "坪林區", "三芝區", "石門區", "八里區", "平溪區", "雙溪區", "貢寮區", "金山區", "萬里區", "烏來區"],
-            "台南市": ["中西區", "東區", "南區", "北區", "安平區", "安南區", "永康區", "歸仁區", "新化區", "左鎮區", "玉井區", "楠西區", "南化區", "仁德區", "關廟區", "龍崎區", "官田區", "麻豆區", "佳里區", "西港區", "七股區", "將軍區", "北門區", "新營區", "後壁區", "白河區", "東山區", "六甲區", "下營區", "柳營區", "鹽水區", "善化區", "大內區", "安定區", "山上區", "安定區"],
-            "桃園市": ["桃園區", "中壢區", "平鎮區", "八德區", "楊梅區", "蘆竹區", "大溪區", "龍潭區", "龜山區", "大園區", "觀音區", "新屋區", "復興區"]
+            "桃園市": ["桃園區", "中壢區", "平鎮區", "八德區", "楊梅區", "蘆竹區", "大溪區", "龍潭區", "龜山區", "大園區", "觀音區", "新屋區", "復興區"],
+            "台中市": ["中區", "東區", "南區", "西區", "北區", "西屯區", "南屯區", "北屯區", "豐原區", "大里區", "太平區", "清水區", "沙鹿區", "梧棲區", "后里區", "神岡區", "潭子區", "大雅區", "新社區", "石岡區", "東勢區", "和平區", "大肚區", "龍井區", "大甲區", "外埔區", "大安區", "烏日區", "霧峰區"],
+            "台南市": ["中西區", "東區", "南區", "北區", "安平區", "安南區", "永康區", "歸仁區", "新化區", "左鎮區", "玉井區", "楠西區", "南化區", "仁德區", "關廟區", "龍崎區", "官田區", "麻豆區", "佳里區", "西港區", "七股區", "將軍區", "北門區", "新營區", "後壁區", "白河區", "東山區", "六甲區", "下營區", "柳營區", "鹽水區", "善化區", "大內區", "安定區", "山上區"],
+            "高雄市": ["鹽埕區", "鼓山區", "左營區", "楠梓區", "三民區", "前金區", "新興區", "前鎮區", "旗津區", "小港區", "鳳山區", "林園區", "大寮區", "大樹區", "大社區", "仁武區", "鳥松區", "岡山區", "橋頭區", "燕巢區", "田寮區", "阿蓮區", "路竹區", "湖內區", "茄萣區", "永安區", "彌陀區", "梓官區", "旗山區", "美濃區", "六龜區", "甲仙區", "杉林區", "內門區", "茂林區", "桃源區", "那瑪夏區"],
+            "基隆市": ["仁愛區", "信義區", "中正區", "中山區", "安樂區", "暖暖區", "七堵區"],
+            "新竹市": ["東區", "北區", "香山區"],
+            "新竹縣": ["竹北市", "竹東鎮", "新埔鎮", "關西鎮", "湖口鄉", "新豐鄉", "峨眉鄉", "寶山鄉", "北埔鄉", "芎林鄉", "橫山鄉", "尖石鄉", "五峰鄉"],
+            "苗栗縣": ["苗栗市", "頭份市", "竹南鎮", "後龍鎮", "通霄鎮", "苑裡鎮", "卓蘭鎮", "造橋鄉", "西湖鄉", "頭屋鄉", "公館鄉", "銅鑼鄉", "三義鄉", "大湖鄉", "獅潭鄉", "三灣鄉", "南庄鄉", "泰安鄉"],
+            "彰化縣": ["彰化市", "員林市", "和美鎮", "鹿港鎮", "溪湖鎮", "二林鎮", "田中鎮", "北斗鎮", "花壇鄉", "芬園鄉", "大村鄉", "埔鹽鄉", "埔心鄉", "永靖鄉", "社頭鄉", "二水鄉", "田尾鄉", "埤頭鄉", "芳苑鄉", "大城鄉", "竹塘鄉", "溪州鄉"],
+            "南投縣": ["南投市", "埔里鎮", "草屯鎮", "竹山鎮", "集集鎮", "名間鄉", "鹿谷鄉", "中寮鄉", "魚池鄉", "國姓鄉", "水里鄉", "信義鄉", "仁愛鄉"],
+            "雲林縣": ["斗六市", "斗南鎮", "虎尾鎮", "西螺鎮", "土庫鎮", "北港鎮", "古坑鄉", "大埤鄉", "莿桐鄉", "林內鄉", "二崙鄉", "崙背鄉", "臺西鄉", "褒忠鄉", "東勢鄉", "台西鄉", "麥寮鄉", "口湖鄉", "水林鄉", "元長鄉"],
+            "嘉義市": ["東區", "西區"],
+            "嘉義縣": ["太保市", "朴子市", "布袋鎮", "大林鎮", "民雄鄉", "溪口鄉", "新港鄉", "六腳鄉", "東石鄉", "義竹鄉", "鹿草鄉", "水上鄉", "中埔鄉", "竹崎鄉", "梅山鄉", "番路鄉", "大埔鄉", "阿里山鄉"],
+            "屏東縣": ["屏東市", "潮州鎮", "東港鎮", "恆春鎮", "萬丹鄉", "長治鄉", "麟洛鄉", "九如鄉", "里港鄉", "鹽埔鄉", "高樹鄉", "萬巒鄉", "內埔鄉", "竹田鄉", "新埤鄉", "枋寮鄉", "新園鄉", "崁頂鄉", "林邊鄉", "南州鄉", "佳冬鄉", "琉球鄉", "車城鄉", "滿州鄉", "枋山鄉", "三地門鄉", "霧臺鄉", "瑪家鄉", "泰武鄉", "來義鄉", "春日鄉", "獅子鄉", "牡丹鄉"],
+            "宜蘭縣": ["宜蘭市", "羅東鎮", "蘇澳鎮", "頭城鎮", "礁溪鄉", "壯圍鄉", "員山鄉", "冬山鄉", "五結鄉", "三星鄉", "大同鄉", "南澳鄉"],
+            "花蓮縣": ["花蓮市", "鳳林鎮", "玉里鎮", "新城鄉", "吉安鄉", "壽豐鄉", "光復鄉", "豐濱鄉", "瑞穗鄉", "富里鄉", "秀林鄉", "萬榮鄉", "卓溪鄉"],
+            "台東縣": ["臺東市", "成功鎮", "關山鎮", "長濱鄉", "池上鄉", "東河鄉", "成功鎮", "鹿野鄉", "延平鄉", "卑南鄉", "金峰鄉", "大武鄉", "達仁鄉", "綠島鄉", "蘭嶼鄉", "海端鄉"],
+            "澎湖縣": ["馬公市", "湖西鄉", "白沙鄉", "西嶼鄉", "望安鄉", "七美鄉"],
+            "金門縣": ["金城鎮", "金沙鎮", "金湖鎮", "金寧鄉", "烈嶼鄉", "烏坵鄉"],
+            "連江縣": ["南竿鄉", "北竿鄉", "莒光鄉", "東引鄉"]
         };
 
-        function updateDistricts(selectId, districtSelectId) {
-            const city = document.getElementById(selectId).value;
+        function populateDistricts(citySelectId, districtSelectId) {
+            const city = document.getElementById(citySelectId).value;
             const districtSelect = document.getElementById(districtSelectId);
             districtSelect.innerHTML = '<option value="">全區 / 鄉鎮</option>';
             if (taiwanDistricts[city]) {
@@ -33,7 +49,6 @@
     <!-- 頂部導覽列 -->
     <header class="bg-white border-b sticky top-0 z-40 px-4 py-3 shadow-xs">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <!-- 點擊 Logo 回首頁 -->
             <a href="#" onclick="location.reload(); return false;" class="flex items-center gap-2 cursor-pointer">
                 <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-black text-xl">∞</div>
                 <div>
@@ -42,9 +57,9 @@
                 </div>
             </a>
 
-            <!-- 搜尋欄 -->
+            <!-- 頂部全台搜尋欄 -->
             <div class="w-full md:w-96 relative">
-                <input type="text" id="searchInput" placeholder="搜尋全台鄉鎮市區好物、品牌..." class="w-full bg-slate-100 pl-4 pr-10 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <input type="text" id="searchInput" placeholder="搜尋全台各縣市鄉鎮、好物、品牌..." class="w-full bg-slate-100 pl-4 pr-10 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 <button class="absolute right-3 top-2.5 text-slate-400">🔍</button>
             </div>
 
@@ -53,8 +68,8 @@
                 <button onclick="openModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 shadow-sm transition">
                     ✨ AI 智慧刊登
                 </button>
-                <button onclick="alert('會員中心功能開發中')" class="border border-slate-200 hover:bg-slate-50 px-4 py-2 rounded-full text-sm font-bold text-slate-700 transition">
-                    登入 / 註冊
+                <button onclick="openLoginModal()" class="border border-slate-200 hover:bg-slate-50 px-4 py-2 rounded-full text-sm font-bold text-slate-700 transition">
+                    👤 會員中心 / 登入
                 </button>
             </div>
         </div>
@@ -72,31 +87,36 @@
             </button>
         </div>
 
-        <!-- 篩選列 (全台地區與分類) -->
+        <!-- 篩選列 (全台地區與 8 大分類) -->
         <div class="bg-white p-4 rounded-2xl shadow-xs border border-slate-100 space-y-4">
             <div class="flex flex-wrap items-center gap-2 text-sm">
                 <span class="text-slate-500 font-semibold flex items-center gap-1">📍 全台地區篩選：</span>
-                <select id="filterCity" onchange="updateDistricts('filterCity', 'filterDistrict'); filterProducts();" class="border border-slate-200 rounded-lg px-3 py-1.5 text-slate-700">
+                <select id="filterCity" onchange="populateDistricts('filterCity', 'filterDistrict'); filterProducts();" class="border border-slate-200 rounded-lg px-3 py-1.5 text-slate-700">
                     <option value="">全台灣 (所有縣市)</option>
-                    <option value="台北市">台北市</option>
-                    <option value="高雄市">高雄市</option>
-                    <option value="台中市">台中市</option>
-                    <option value="新北市">新北市</option>
-                    <option value="台南市">台南市</option>
-                    <option value="桃園市">桃園市</option>
+                    <option value="台北市">台北市</option><option value="新北市">新北市</option><option value="桃園市">桃園市</option>
+                    <option value="台中市">台中市</option><option value="台南市">台南市</option><option value="高雄市">高雄市</option>
+                    <option value="基隆市">基隆市</option><option value="新竹市">新竹市</option><option value="新竹縣">新竹縣</option>
+                    <option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="南投縣">南投縣</option>
+                    <option value="雲林縣">雲林縣</option><option value="嘉義市">嘉義市</option><option value="嘉義縣">嘉義縣</option>
+                    <option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option>
+                    <option value="台東縣">台東縣</option><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option>
                 </select>
                 <select id="filterDistrict" onchange="filterProducts()" class="border border-slate-200 rounded-lg px-3 py-1.5 text-slate-700">
                     <option value="">全區 / 鄉鎮</option>
                 </select>
             </div>
 
-            <!-- 分類標籤 -->
+            <!-- 參考各大拍賣 App 的 8 大熱門分類 -->
             <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100">
                 <button onclick="selectCategory('全部', this)" class="category-btn bg-emerald-600 text-white px-4 py-1.5 rounded-full text-xs font-bold transition">全部商品</button>
-                <button onclick="selectCategory('電子產品', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">📱 手機與3C</button>
-                <button onclick="selectCategory('家居', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">🛋️ 家居家具</button>
-                <button onclick="selectCategory('書籍', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">📚 圖書文具</button>
-                <button onclick="selectCategory('其他', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">📦 其他好物</button>
+                <button onclick="selectCategory('手機與3C', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">📱 手機與3C</button>
+                <button onclick="selectCategory('電腦與配件', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">💻 電腦與配件</button>
+                <button onclick="selectCategory('家居家具', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">🛋️ 家居家具</button>
+                <button onclick="selectCategory('服飾配件', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">👗 服飾配件</button>
+                <button onclick="selectCategory('圖書文具', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">📚 圖書文具</button>
+                <button onclick="selectCategory('運動戶外', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">⚽ 運動戶外</button>
+                <button onclick="selectCategory('美妝玩具', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">🧸 美妝玩具</button>
+                <button onclick="selectCategory('其他好物', this)" class="category-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-xs font-bold transition">📦 其他好物</button>
             </div>
         </div>
 
@@ -127,10 +147,14 @@
                     <div>
                         <label class="block font-bold mb-1 text-slate-700">商品分類 (AI 自動判定)</label>
                         <select id="modalCategory" class="w-full border border-slate-200 p-2.5 rounded-xl bg-slate-50 font-bold text-emerald-700">
-                            <option value="電子產品">📱 電子產品</option>
-                            <option value="家居">🛋️ 家居</option>
-                            <option value="書籍">📚 書籍</option>
-                            <option value="其他">📦 其他</option>
+                            <option value="手機與3C">📱 手機與3C</option>
+                            <option value="電腦與配件">💻 電腦與配件</option>
+                            <option value="家居家具">🛋️ 家居家具</option>
+                            <option value="服飾配件">👗 服飾配件</option>
+                            <option value="圖書文具">📚 圖書文具</option>
+                            <option value="運動戶外">⚽ 運動戶外</option>
+                            <option value="美妝玩具">🧸 美妝玩具</option>
+                            <option value="其他好物">📦 其他好物</option>
                         </select>
                     </div>
                     <div>
@@ -138,9 +162,9 @@
                         <select id="modalCondition" class="w-full border border-slate-200 p-2.5 rounded-xl">
                             <option value="全新">✨ 全新</option>
                             <option value="幾乎全新">💎 幾乎全新</option>
-                            <option value="九成新">⭐ 九成新</option>
+                            <option value="九成新" selected>⭐ 九成新</option>
                             <option value="輕微使用痕跡">🟢 輕微使用痕跡</option>
-                            <option value="明顯使用痕跡">🟡明顯使用痕跡</option>
+                            <option value="明顯使用痕跡">🟡 明顯使用痕跡</option>
                         </select>
                     </div>
                 </div>
@@ -148,22 +172,20 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block font-bold mb-1 text-slate-700">縣市 (自動定位)</label>
-                        <select id="modalCity" onchange="updateDistricts('modalCity', 'modalDistrict')" class="w-full border border-slate-200 p-2.5 rounded-xl">
-                            <option value="台北市">台北市</option>
-                            <option value="高雄市" selected>高雄市</option>
-                            <option value="台中市">台中市</option>
-                            <option value="新北市">新北市</option>
-                            <option value="台南市">台南市</option>
-                            <option value="桃園市">桃園市</option>
+                        <select id="modalCity" onchange="populateDistricts('modalCity', 'modalDistrict')" class="w-full border border-slate-200 p-2.5 rounded-xl">
+                            <option value="台北市">台北市</option><option value="新北市">新北市</option><option value="桃園市">桃園市</option>
+                            <option value="台中市">台中市</option><option value="台南市">台南市</option><option value="高雄市" selected>高雄市</option>
+                            <option value="基隆市">基隆市</option><option value="新竹市">新竹市</option><option value="新竹縣">新竹縣</option>
+                            <option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="南投縣">南投縣</option>
+                            <option value="雲林縣">雲林縣</option><option value="嘉義市">嘉義市</option><option value="嘉義縣">嘉義縣</option>
+                            <option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option>
+                            <option value="台東縣">台東縣</option><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-bold mb-1 text-slate-700">鄉鎮區</label>
                         <select id="modalDistrict" class="w-full border border-slate-200 p-2.5 rounded-xl">
                             <option value="鼓山區">鼓山區</option>
-                            <option value="左營區">左營區</option>
-                            <option value="前鎮區">前鎮區</option>
-                            <option value="三民區">三民區</option>
                         </select>
                     </div>
                 </div>
@@ -185,28 +207,46 @@
         </div>
     </div>
 
+    <!-- 會員中心 / 登入彈跳視窗 -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl text-center">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-lg font-bold text-slate-900">👤 會員中心 / 登入</h3>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            <p class="text-xs text-slate-500">登入後即可管理您的商品、修改密碼與查看私訊紀錄。</p>
+            <div class="space-y-3 text-sm">
+                <input type="email" placeholder="電子郵件" class="w-full border p-2.5 rounded-xl">
+                <input type="password" placeholder="密碼設定 / 修改" class="w-full border p-2.5 rounded-xl">
+                <button onclick="alert('會員登入/註冊功能已啟動'); closeLoginModal();" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition">登入 / 註冊帳號</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let allProducts = [];
         let currentCategory = '全部';
 
         function openModal() {
             document.getElementById('productModal').classList.remove('hidden');
-            autoDetectLocation(); // 開啟時自動定位
+            autoDetectLocation();
         }
-        function closeModal() { document.getElementById('productModal').classList.add('hidden'); }
+        function closeModal() { document.getElementById('productModal'].classList.add('hidden'); }
+        
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
 
-        // 自動定位功能
+        // 自動定位
         function autoDetectLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    // 簡單示範：若在台灣南部預設高雄，也可以依據經緯度精準對應
+                    // 預設對應至當前高雄市鼓山區
                     document.getElementById('modalCity').value = '高雄市';
-                    updateDistricts('modalCity', 'modalDistrict');
+                    populateDistricts('modalCity', 'modalDistrict');
                     document.getElementById('modalDistrict').value = '鼓山區';
-                }, () => {
-                    console.log('無法取得定位，使用預設值');
-                });
+                }, () => {});
             }
+            populateDistricts('modalCity', 'modalDistrict');
         }
 
         function previewImage(event) {
@@ -216,9 +256,7 @@
                 reader.onload = function(e) {
                     document.getElementById('imagePreview').src = e.target.result;
                     document.getElementById('imagePreviewContainer').classList.remove('hidden');
-                    
-                    // 模擬 AI 快速判斷分類 (可根據檔名或直接預設電子產品)
-                    document.getElementById('modalCategory').value = '電子產品';
+                    document.getElementById('modalCategory').value = '手機與3C';
                 }
                 reader.readAsDataURL(file);
             }
@@ -269,7 +307,6 @@
                 return;
             }
 
-            // 加上狀態 Emoji 對應
             const conditionEmoji = {
                 "全新": "✨",
                 "幾乎全新": "💎",
@@ -293,7 +330,7 @@
                             <div class="flex flex-wrap gap-1.5 text-[11px] text-slate-500">
                                 <span class="bg-slate-100 px-2 py-0.5 rounded-md">📂 ${p.category}</span>
                                 <span class="bg-slate-100 px-2 py-0.5 rounded-md">${emoji} ${p.condition_status || '新舊不明'}</span>
-                                <span class="bg-slate-100 px-2 py-0.5 rounded-md">📍 ${p.region || '未指定地區'}</span>
+                                <span class="bg-slate-100 px-2 py-0.5 rounded-md">📍 ${p.region || '全台灣'}</span>
                             </div>
                             <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
                                 <span class="text-slate-400">${new Date(p.created_at).toLocaleDateString()}</span>
@@ -343,7 +380,7 @@
                         alert('上架失敗: ' + (result.error || '未知錯誤'));
                     }
                 } catch (err) {
-                    alert('發生連線錯誤');
+                    alert('發生連線錯誤，請確認圖片大小');
                 } finally {
                     btn.innerText = '🚀 確認送出 AI 智慧上架';
                     btn.disabled = false;
