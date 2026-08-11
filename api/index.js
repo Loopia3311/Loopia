@@ -10,7 +10,7 @@ app.use(express.json({ limit: '15mb' }));
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// API 路由
+// API 路由：上架商品
 app.post('/api/create-product', async (req, res) => {
     const { imageBase64, category, condition_status, region, extraDescription, sellerContact } = req.body;
     try {
@@ -35,6 +35,7 @@ app.post('/api/create-product', async (req, res) => {
     }
 });
 
+// API 路由：取得商品列表
 app.get('/api/products', async (req, res) => {
     const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false });
     res.json({ success: true, data });

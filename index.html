@@ -7,10 +7,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
-    <!-- 導覽列與主體邏輯維持不變，僅更新 AuthModal 部分 -->
-    <div id="authModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4">
-            <h3 class="text-lg font-bold text-slate-900 text-center">登入 Loopia</h3>
+    <div class="max-w-md mx-auto p-4 space-y-6">
+        <header class="text-center py-6">
+            <h1 class="text-2xl font-black text-emerald-600">Loopia 路比亞</h1>
+            <p class="text-sm text-slate-500">AI 智慧二手市集</p>
+        </header>
+
+        <!-- 登入卡片範例 -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl space-y-4">
+            <h3 class="text-lg font-bold text-slate-900 text-center">會員登入 / 註冊</h3>
             
             <!-- 社交登入按鈕群 -->
             <div class="space-y-2">
@@ -33,14 +38,13 @@
                 <div class="relative flex justify-center text-xs text-slate-400 bg-white px-2">或使用電子郵件</div>
             </div>
 
-            <!-- Email 登入欄位 (維持你原本的邏輯) -->
-            <div id="authViewLogin" class="space-y-3 text-sm">
+            <!-- Email 登入欄位 -->
+            <div class="space-y-3 text-sm">
                 <input type="email" placeholder="電子郵件" class="w-full px-3 py-2 rounded-xl border border-slate-300">
                 <input type="password" placeholder="密碼" class="w-full px-3 py-2 rounded-xl border border-slate-300">
                 <button class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl">登入</button>
             </div>
         </div>
     </div>
-    <!-- ... 其餘內容同上 ... -->
 </body>
 </html>
