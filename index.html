@@ -4,47 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loopia 路比亞 - AI 智慧二手市集</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
-    <div class="max-w-md mx-auto p-4 space-y-6">
-        <header class="text-center py-6">
-            <h1 class="text-2xl font-black text-emerald-600">Loopia 路比亞</h1>
-            <p class="text-sm text-slate-500">AI 智慧二手市集</p>
-        </header>
+    <!-- 頂部導覽列 -->
+    <nav class="p-4 bg-white shadow-sm flex justify-between items-center max-w-md mx-auto rounded-b-2xl">
+        <h1 class="text-xl font-black text-emerald-600">Loopia 路比亞</h1>
+        <button onclick="toggleModal()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md hover:bg-emerald-700 transition">＋ 我要上架</button>
+    </nav>
 
-        <!-- 登入卡片範例 -->
-        <div class="bg-white rounded-3xl p-6 shadow-xl space-y-4">
-            <h3 class="text-lg font-bold text-slate-900 text-center">會員登入 / 註冊</h3>
-            
-            <!-- 社交登入按鈕群 -->
-            <div class="space-y-2">
-                <button class="w-full flex items-center justify-center gap-2 border py-2.5 rounded-xl hover:bg-slate-50 transition font-semibold text-sm">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5"> Google 登入
-                </button>
-                <button class="w-full flex items-center justify-center gap-2 bg-[#06C755] text-white py-2.5 rounded-xl hover:bg-[#05b350] transition font-semibold text-sm">
-                    <img src="https://www.svgrepo.com/show/354039/line.svg" class="w-5 h-5"> Line 登入
-                </button>
-                <button class="w-full flex items-center justify-center gap-2 bg-[#1877F2] text-white py-2.5 rounded-xl hover:bg-[#166fe5] transition font-semibold text-sm">
-                    <img src="https://www.svgrepo.com/show/448222/facebook.svg" class="w-5 h-5"> Facebook 登入
-                </button>
-                <button class="w-full flex items-center justify-center gap-2 bg-black text-white py-2.5 rounded-xl hover:bg-slate-800 transition font-semibold text-sm">
-                    <img src="https://www.svgrepo.com/show/448233/apple.svg" class="w-5 h-5"> Apple 登入
-                </button>
-            </div>
-            
-            <div class="relative py-2">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t"></div></div>
-                <div class="relative flex justify-center text-xs text-slate-400 bg-white px-2">或使用電子郵件</div>
-            </div>
-
-            <!-- Email 登入欄位 -->
-            <div class="space-y-3 text-sm">
-                <input type="email" placeholder="電子郵件" class="w-full px-3 py-2 rounded-xl border border-slate-300">
-                <input type="password" placeholder="密碼" class="w-full px-3 py-2 rounded-xl border border-slate-300">
-                <button class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl">登入</button>
-            </div>
+    <div class="max-w-md mx-auto p-4 space-y-4">
+        <h2 class="text-lg font-bold text-slate-900 mt-2">🔥 最新二手商品</h2>
+        
+        <!-- 商品列表容器 -->
+        <div id="productList" class="space-y-4">
+            <p class="text-slate-400 text-center py-8">正在載入商品...</p>
         </div>
     </div>
+
+    <!-- 上架彈跳視窗 (預設隱藏) -->
+    <div id="productModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold">AI 智慧上架</h3>
+                <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            
+            <form id="productForm" onsubmit="submitProduct(event)" class="space-y-3 text-sm">
+                <div>
+                    <label class="block font-semibold mb-1">選擇商品圖片</label>
+                    <input type="file" id="imageInput" accept="image/*" required class="w-full border p-2 rounded-xl">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">商品分類</label>
+                    <select id="category" class="w-full border p-2 rounded-xl">
+                        <option value="電子產品">電子產品</option>
+                        <option value="書籍">書籍</option>
+                        <option value="家居">家居</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">新舊程度</label>
+                    <select id="condition" class="w-full border p-2 rounded-xl">
+                        <option value="全新">全新</option>
+                        <option value="幾乎全新">幾乎全新</option>
+                        <option value="輕微使用痕跡">輕微使用痕跡</option>
+                        <option value="明顯使用痕跡">明顯使用痕跡</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">所在地區</label>
+                    <input type="text" id="region" placeholder="例如：台北市、高雄市" required class="w-full border p-2 rounded-xl">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">賣家聯絡 Email</label>
+                    <input type="email" id="sellerContact" placeholder="你的電子郵件" required class="w-full border p-2 rounded-xl">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">補充說明 (選填)</label>
+                    <textarea id="extraDescription" placeholder="例如：使用半年，功能正常..." class="w-full border p-2 rounded-xl"></textarea>
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition">送出 AI 分析並上架</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 切換上架視窗顯示
+        function toggleModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // 載入商品列表
+        async function loadProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const result = await res.json();
+                const list = document.getElementById('productList');
+
+                if (!result.success || !result.data || result.data.length === 0) {
+                    list.innerHTML = '<p class="text-slate-400 text-center py-8">目前還沒有商品，點擊上方按鈕上架第一件商品吧！</p>';
+                    return;
+                }
+
+                list.innerHTML = result.data.map(p => `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-base text-slate-900">${p.title}</h3>
+                            <span class="text-emerald-600 font-extrabold text-lg">$${p.price}</span>
+                        </div>
+                        <p class="text-sm text-slate-600 whitespace-pre-line">${p.description}</p>
+                        <div class="flex flex-wrap gap-2 pt-1 text-xs text-slate-500">
+                            <span class="bg-slate-100 px-2.5 py-1 rounded-lg">分類: ${p.category}</span>
+                            <span class="bg-slate-100 px-2.5 py-1 rounded-lg">新舊: ${p.condition_status || '未註明'}</span>
+                            <span class="bg-slate-100 px-2.5 py-1 rounded-lg">地區: ${p.region || '未註明'}</span>
+                        </div>
+                        <div class="pt-2 border-t flex justify-between items-center text-xs">
+                            <span class="text-slate-400">上架時間: ${new Date(p.created_at).toLocaleDateString()}</span>
+                            <a href="mailto:${p.seller_contact}" class="bg-slate-900 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-slate-800 transition">聯絡賣家</a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('productList').innerHTML = '<p class="text-red-500 text-center">載入商品失敗</p>';
+            }
+        }
+
+        // 處理上架送出
+        async function submitProduct(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = 'AI 正在分析圖片中，請稍候...';
+            btn.disabled = true;
+
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const imageBase64 = reader.result;
+                const payload = {
+                    imageBase64,
+                    category: document.getElementById('category').value,
+                    condition_status: document.getElementById('condition').value,
+                    region: document.getElementById('region').value,
+                    extraDescription: document.getElementById('extraDescription').value,
+                    sellerContact: document.getElementById('sellerContact').value
+                };
+
+                try {
+                    const res = await fetch('/api/create-product', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await res.json();
+
+                    if (result.success) {
+                        alert('商品上架成功！');
+                        toggleModal();
+                        document.getElementById('productForm').reset();
+                        loadProducts(); // 重新整理列表
+                    } else {
+                        alert('上架失敗: ' + result.error);
+                    }
+                } catch (err) {
+                    alert('發生錯誤: ' + err.message);
+                } finally {
+                    btn.innerText = '送出 AI 分析並上架';
+                    btn.disabled = false;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 畫面載入後自動抓取商品
+        loadProducts();
+    </script>
 </body>
 </html>
