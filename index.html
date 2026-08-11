@@ -3,76 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loopia 溫馨二手市集</title>
+    <title>Loopia 路比亞 - AI 智慧二手市集</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-[#FAF8F5] text-stone-700 min-h-screen font-sans">
-    <div class="max-w-4xl mx-auto p-4 sm:p-6">
-        <!-- 頂部導覽列：點擊 Logo 回首頁 -->
-        <header class="flex flex-col sm:flex-row justify-between items-center mb-8 border-b border-stone-200 pb-4 gap-4">
-            <div>
-                <a href="#" id="homeLogo" class="group flex items-center gap-2 cursor-pointer">
-                    <h1 class="text-3xl font-extrabold text-amber-700 tracking-tight group-hover:opacity-90 transition">Loopia 溫馨二手市集</h1>
+<body class="bg-slate-50 text-slate-800 min-h-screen font-sans pb-12">
+    <!-- 頂部導覽列 -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <!-- Logo 與標籤 -->
+            <div class="flex items-center justify-between w-full sm:w-auto">
+                <a href="#" id="homeLogo" class="flex items-center gap-2 cursor-pointer">
+                    <div class="bg-emerald-600 text-white font-black text-xl px-3 py-1.5 rounded-xl tracking-wider">∞</div>
+                    <span class="text-xl font-extrabold text-slate-900 tracking-tight">Loopia <span class="text-emerald-700">路比亞</span></span>
                 </a>
-                <p class="text-sm text-stone-500 mt-1">讓好物溫柔循環，AI 幫你輕鬆賦予它新生命 🌿</p>
+                <span class="hidden sm:inline-block bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-semibold">AI 視覺 & 全功能會員版</span>
             </div>
-            
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <div class="bg-white px-3 py-2 rounded-2xl border border-stone-200 text-sm flex items-center gap-2 shadow-xs">
-                    <span>📍 地區：</span>
-                    <select id="regionFilter" class="bg-transparent font-medium text-amber-800 focus:outline-none cursor-pointer">
-                        <option value="全部">全台灣</option>
-                        <optgroup label="北部">
-                            <option value="基隆市">基隆市</option>
-                            <option value="台北市">台北市</option>
-                            <option value="新北市">新北市</option>
-                            <option value="桃園市">桃園市</option>
-                            <option value="新竹市">新竹市</option>
-                            <option value="新竹縣">新竹縣</option>
-                            <option value="宜蘭縣">宜蘭縣</option>
-                        </optgroup>
-                        <optgroup label="中部">
-                            <option value="苗栗縣">苗栗縣</option>
-                            <option value="台中市">台中市</option>
-                            <option value="彰化縣">彰化縣</option>
-                            <option value="南投縣">南投縣</option>
-                            <option value="雲林縣">雲林縣</option>
-                        </optgroup>
-                        <optgroup label="南部">
-                            <option value="嘉義市">嘉義市</option>
-                            <option value="嘉義縣">嘉義縣</option>
-                            <option value="台南市">台南市</option>
-                            <option value="高雄市">高雄市</option>
-                            <option value="屏東縣">屏東縣</option>
-                        </optgroup>
-                        <optgroup label="東部與離島">
-                            <option value="花蓮縣">花蓮縣</option>
-                            <option value="台東縣">台東縣</option>
-                            <option value="澎湖縣">澎湖縣</option>
-                            <option value="金門縣">金門縣</option>
-                            <option value="連江縣">連江縣</option>
-                        </optgroup>
-                    </select>
-                </div>
-                <button id="memberBtn" class="bg-stone-800 hover:bg-stone-900 text-white text-sm font-semibold px-4 py-2.5 rounded-2xl transition shadow-xs cursor-pointer">
-                    👤 會員中心
+
+            <!-- 頂部搜尋列 -->
+            <div class="w-full sm:max-w-md relative">
+                <input type="text" id="searchInput" placeholder="搜尋全台鄉鎮市區好物、品牌..." class="w-full bg-slate-100/80 border border-slate-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                <span class="absolute right-3 top-2.5 text-slate-400">🔍</span>
+            </div>
+
+            <!-- 右側功能按鈕 -->
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <button id="openUploadBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2 rounded-full transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                    ✨ AI 智慧刊登
+                </button>
+                <button id="authBtn" class="border border-slate-300 hover:bg-slate-100 text-slate-700 text-sm font-semibold px-4 py-2 rounded-full transition cursor-pointer">
+                    登入 / 註冊
                 </button>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- 主要內容區 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- 左側：溫暖風格的上架表單 -->
-            <div class="md:col-span-1 bg-white rounded-3xl shadow-xs border border-stone-200/80 p-5 h-fit">
-                <h2 class="text-base font-bold mb-4 flex items-center gap-2 text-stone-800">📸 AI 溫馨上架</h2>
-                <form id="uploadForm" class="space-y-4 text-sm">
+    <main class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
+        <!-- 宣傳 Banner -->
+        <div class="bg-emerald-700 text-white rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-center gap-6 shadow-md relative overflow-hidden">
+            <div class="space-y-2 z-10">
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight flex items-center gap-2">
+                    真實雲端 AI 視覺辨識 & 全網行情比對引擎 🌍
+                </h2>
+                <p class="text-emerald-100 text-sm sm:text-base leading-relaxed">
+                    拍照後透過後端 AI 模型辨識物件並自動比對網路二手市集售價；完整會員中心支援密碼修改與設定！
+                </p>
+            </div>
+            <button id="bannerUploadBtn" class="bg-white text-emerald-800 hover:bg-emerald-50 font-bold px-6 py-3 rounded-full transition shadow-md whitespace-nowrap cursor-pointer z-10">
+                立即拍照上架 →
+            </button>
+        </div>
+
+        <!-- 地區與分類篩選區 -->
+        <div class="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div class="flex items-center gap-2 text-sm font-bold text-slate-700">
+                    <span>📍 全地區篩選：</span>
+                </div>
+                <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                    <select id="regionFilter" class="bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-emerald-800 focus:outline-none cursor-pointer">
+                        <option value="全部">全台灣 (所有縣市)</option>
+                        <option value="基隆市">基隆市</option>
+                        <option value="台北市">台北市</option>
+                        <option value="新北市">新北市</option>
+                        <option value="桃園市">桃園市</option>
+                        <option value="新竹市">新竹市</option>
+                        <option value="新竹縣">新竹縣</option>
+                        <option value="苗栗縣">苗栗縣</option>
+                        <option value="台中市">台中市</option>
+                        <option value="彰化縣">彰化縣</option>
+                        <option value="南投縣">南投縣</option>
+                        <option value="雲林縣">雲林縣</option>
+                        <option value="嘉義市">嘉義市</option>
+                        <option value="嘉義縣">嘉義縣</option>
+                        <option value="台南市">台南市</option>
+                        <option value="高雄市">高雄市</option>
+                        <option value="屏東縣">屏東縣</option>
+                        <option value="宜蘭縣">宜蘭縣</option>
+                        <option value="花蓮縣">花蓮縣</option>
+                        <option value="台東縣">台東縣</option>
+                        <option value="澎湖縣">澎湖縣</option>
+                        <option value="金門縣">金門縣</option>
+                        <option value="連江縣">連江縣</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 分類標籤列 -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                <button class="category-btn bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap shadow-xs cursor-pointer transition" data-category="全部">全部商品</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="手機與3C">📱 手機與3C</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="家居家具">🛋️ 家居家具</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="服飾配件">👕 服飾配件</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="圖書文具">📚 圖書文具</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="美妝生活">✨ 美妝生活</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="休閒娛樂">⚽ 休閒娛樂</button>
+                <button class="category-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition" data-category="母嬰玩具">🧸 母嬰玩具</button>
+            </div>
+        </div>
+
+        <!-- 商品列表展示區 -->
+        <section>
+            <div class="flex justify-between items-center mb-4 px-2">
+                <h3 class="text-lg font-bold text-slate-900">🔥 熱門精選好物</h3>
+                <span id="productCount" class="text-xs text-slate-400 font-medium">載入中...</span>
+            </div>
+            <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <p class="text-slate-400 text-sm col-span-full text-center py-12">正在載入商品列表...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI 智慧刊登彈窗 (Modal) -->
+    <div id="uploadModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 my-8">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">📸 AI 智慧上架</h3>
+                <button id="closeUploadModal" class="text-slate-400 hover:text-slate-600 text-xl font-bold px-2 cursor-pointer">&times;</button>
+            </div>
+
+            <form id="uploadForm" class="space-y-4 text-sm">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">上傳商品照片 (AI 將自動分析)</label>
+                    <input type="file" id="imageInput" accept="image/*" required class="block w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-medium text-stone-600 mb-1">商品照片</label>
-                        <input type="file" id="imageInput" accept="image/*" required class="block w-full text-xs text-stone-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-800 hover:file:bg-amber-100 cursor-pointer">
+                        <label class="block font-medium text-slate-700 mb-1">商品分類</label>
+                        <select id="itemCategory" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            <option value="手機與3C">手機與3C</option>
+                            <option value="家居家具">家居家具</option>
+                            <option value="服飾配件">服飾配件</option>
+                            <option value="圖書文具">圖書文具</option>
+                            <option value="美妝生活">美妝生活</option>
+                            <option value="休閒娛樂">休閒娛樂</option>
+                            <option value="母嬰玩具">母嬰玩具</option>
+                            <option value="其他">其他</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block font-medium text-stone-600 mb-1">商品所在地</label>
-                        <select id="itemRegion" class="w-full px-3 py-2 rounded-2xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none bg-stone-50/50">
+                        <label class="block font-medium text-slate-700 mb-1">商品狀態</label>
+                        <select id="itemCondition" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            <option value="全新未拆封">✨ 全新未拆封</option>
+                            <option value="幾乎全新 (9成新以上)">💎 幾乎全新 (9成新)</option>
+                            <option value="輕微使用痕跡 (8成新)">📦 輕微使用痕跡 (8成新)</option>
+                            <option value="有明顯使用痕跡">🛠️ 有明顯使用痕跡</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">商品所在地 (自動定位)</label>
+                    <div class="flex gap-2">
+                        <select id="itemRegion" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                             <option value="台北市">台北市</option>
                             <option value="新北市">新北市</option>
                             <option value="桃園市">桃園市</option>
@@ -96,69 +179,178 @@
                             <option value="金門縣">金門縣</option>
                             <option value="連江縣">連江縣</option>
                         </select>
+                        <button type="button" id="autoGeoBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-2 rounded-xl whitespace-nowrap cursor-pointer font-medium">📍 自動定位</button>
                     </div>
-                    <div>
-                        <label class="block font-medium text-stone-600 mb-1">聯絡方式 (LINE ID / 電話)</label>
-                        <input type="text" id="sellerContact" placeholder="例如：line_id123" required class="w-full px-3 py-2 rounded-2xl border border-stone-200 focus:ring-2 focus:ring-amber-500 focus:outline-none bg-stone-50/50">
-                    </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 px-4 rounded-2xl transition shadow-sm shadow-amber-900/10 cursor-pointer">
-                        ✨ 讓 AI 生成文案並上架
-                    </button>
-                </form>
-                <div id="loading" class="hidden mt-3 text-center text-xs text-amber-700 font-medium animate-pulse">
-                    🤖 AI 正在細心觀察您的商品，請稍候...
                 </div>
-            </div>
 
-            <!-- 右側：商品列表展示 -->
-            <div class="md:col-span-2">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-stone-800">🧸 溫馨好物牆</h2>
-                    <span id="productCount" class="text-xs text-stone-400 font-medium">載入中...</span>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">聯絡方式 (LINE ID / 電話)</label>
+                    <input type="text" id="sellerContact" placeholder="例如：line_id123 或 0912345678" required class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
-                <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <p class="text-stone-400 text-sm col-span-2 text-center py-8">正在把好物搬上架...</p>
-                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-md cursor-pointer">
+                    ✨ 確認送出，讓 AI 生成文案並上架
+                </button>
+            </form>
+
+            <div id="loading" class="hidden text-center text-xs text-emerald-600 font-bold animate-pulse py-2">
+                🤖 AI 正在辨識物件並比對市集行情中，請稍候約 5 秒...
             </div>
         </div>
     </div>
 
-    <!-- 會員中心互動視窗 -->
-    <div id="memberModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-xl border border-stone-100">
-            <h3 class="text-lg font-bold mb-2 text-stone-800">👤 關於您的會員身分</h3>
-            <p class="text-sm text-stone-600 mb-6 leading-relaxed">歡迎來到 Loopia！目前您以親切的訪客身分瀏覽，您可以隨時免費上架您的二手好物，讓它找到疼愛它的新主人。</p>
-            <button id="closeModal" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold py-2.5 rounded-2xl text-sm cursor-pointer transition">我知道了</button>
+    <!-- 登入 / 註冊彈窗 -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 id="authTitle" class="text-lg font-bold text-slate-900">👤 會員登入</h3>
+                <button id="closeAuthModal" class="text-slate-400 hover:text-slate-600 text-xl font-bold px-2 cursor-pointer">&times;</button>
+            </div>
+            
+            <div id="authViewLogin" class="space-y-3 text-sm">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">電子郵件</label>
+                    <input type="email" id="loginEmail" placeholder="your@email.com" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">密碼</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <button id="actionLoginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition cursor-pointer">登入帳號</button>
+                <p class="text-center text-xs text-slate-500 pt-2">還沒有帳號？ <button type="button" id="switchToRegister" class="text-emerald-600 font-bold hover:underline cursor-pointer">立即註冊</button></p>
+            </div>
+
+            <div id="authViewRegister" class="hidden space-y-3 text-sm">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">設定電子郵件</label>
+                    <input type="email" id="regEmail" placeholder="your@email.com" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">設定密碼</label>
+                    <input type="password" id="regPassword" placeholder="至少 6 位數密碼" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                </div>
+                <button id="actionRegisterBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition cursor-pointer">註冊新會員</button>
+                <p class="text-center text-xs text-slate-500 pt-2">已經有帳號了？ <button type="button" id="switchToLogin" class="text-emerald-600 font-bold hover:underline cursor-pointer">返回登入</button></p>
+            </div>
         </div>
     </div>
 
+    <!-- 用戶端互動 JavaScript -->
     <script>
-        const form = document.getElementById('uploadForm');
+        const homeLogo = document.getElementById('homeLogo');
+        const openUploadBtn = document.getElementById('openUploadBtn');
+        const bannerUploadBtn = document.getElementById('bannerUploadBtn');
+        const uploadModal = document.getElementById('uploadModal');
+        const closeUploadModal = document.getElementById('closeUploadModal');
+        
+        const authBtn = document.getElementById('authBtn');
+        const authModal = document.getElementById('authModal');
+        const closeAuthModal = document.getElementById('closeAuthModal');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const authViewLogin = document.getElementById('authViewLogin');
+        const authViewRegister = document.getElementById('authViewRegister');
+        const authTitle = document.getElementById('authTitle');
+
+        const uploadForm = document.getElementById('uploadForm');
         const imageInput = document.getElementById('imageInput');
+        const itemCategory = document.getElementById('itemCategory');
+        const itemCondition = document.getElementById('itemCondition');
         const itemRegion = document.getElementById('itemRegion');
-        const sellerContactInput = document.getElementById('sellerContact');
+        const sellerContact = document.getElementById('sellerContact');
         const submitBtn = document.getElementById('submitBtn');
         const loading = document.getElementById('loading');
+        
         const productList = document.getElementById('productList');
-        const regionFilter = document.getElementById('regionFilter');
         const productCount = document.getElementById('productCount');
-        const memberBtn = document.getElementById('memberBtn');
-        const memberModal = document.getElementById('memberModal');
-        const closeModal = document.getElementById('closeModal');
-        const homeLogo = document.getElementById('homeLogo');
+        const regionFilter = document.getElementById('regionFilter');
+        const searchInput = document.getElementById('searchInput');
+        const autoGeoBtn = document.getElementById('autoGeoBtn');
+        const categoryBtns = document.querySelectorAll('.category-btn');
 
         let allProducts = [];
+        let currentCategory = 'All';
 
-        // 點擊 Logo 回首頁（重設篩選並滾動到最上方）
+        // 彈窗開關控制
+        openUploadBtn.addEventListener('click', () => uploadModal.classList.remove('hidden'));
+        bannerUploadBtn.addEventListener('click', () => uploadModal.classList.remove('hidden'));
+        closeUploadModal.addEventListener('click', () => uploadModal.classList.add('hidden'));
+
+        authBtn.addEventListener('click', () => authModal.classList.remove('hidden'));
+        closeAuthModal.addEventListener('click', () => authModal.classList.add('hidden'));
+
+        switchToRegister.addEventListener('click', () => {
+            authViewLogin.classList.add('hidden');
+            authViewRegister.classList.remove('hidden');
+            authTitle.textContent = '👤 會員註冊';
+        });
+        switchToLogin.addEventListener('click', () => {
+            authViewRegister.classList.add('hidden');
+            authViewLogin.classList.remove('hidden');
+            authTitle.textContent = '👤 會員登入';
+        });
+
         homeLogo.addEventListener('click', (e) => {
             e.preventDefault();
             regionFilter.value = '全部';
+            searchInput.value = '';
+            currentCategory = 'All';
+            updateCategoryUI('全部');
             renderProducts(allProducts);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        memberBtn.addEventListener('click', () => memberModal.classList.remove('hidden'));
-        closeModal.addEventListener('click', () => memberModal.classList.add('hidden'));
+        // 自動定位功能
+        autoGeoBtn.addEventListener('click', () => {
+            if (!navigator.geolocation) {
+                return alert('您的瀏覽器不支援自動定位功能');
+            }
+            autoGeoBtn.textContent = '定位中...';
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                // 簡單根據經緯度判定台北/高雄或直接預設
+                if (lat > 25.0) {
+                    itemRegion.value = '台北市';
+                } else if (lat < 22.7) {
+                    itemRegion.value = '高雄市';
+                } else {
+                    itemRegion.value = '台中市';
+                }
+                autoGeoBtn.textContent = '📍 定位成功！';
+                setTimeout(() => autoGeoBtn.textContent = '📍 自動定位', 2000);
+            }, () => {
+                alert('無法取得您的位置權限，請手動選擇地區。');
+                autoGeoBtn.textContent = '📍 自動定位';
+            });
+        });
+
+        // 分類點擊切換
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                categoryBtns.forEach(b => {
+                    b.classList.remove('bg-emerald-600', 'text-white', 'font-bold');
+                    b.classList.add('bg-slate-100', 'text-slate-700', 'font-medium');
+                });
+                btn.classList.remove('bg-slate-100', 'text-slate-700', 'font-medium');
+                btn.classList.add('bg-emerald-600', 'text-white', 'font-bold');
+                
+                currentCategory = btn.getAttribute('data-category');
+                renderProducts(allProducts);
+            });
+        });
+
+        function updateCategoryUI(catName) {
+            categoryBtns.forEach(b => {
+                if (b.getAttribute('data-category') === catName || (catName === '全部' && b.getAttribute('data-category') === '全部')) {
+                    b.classList.remove('bg-slate-100', 'text-slate-700', 'font-medium');
+                    b.classList.add('bg-emerald-600', 'text-white', 'font-bold');
+                } else {
+                    b.classList.remove('bg-emerald-600', 'text-white', 'font-bold');
+                    b.classList.add('bg-slate-100', 'text-slate-700', 'font-medium');
+                }
+            });
+        }
 
         function convertBase64(file) {
             return new Promise((resolve, reject) => {
@@ -169,7 +361,67 @@
             });
         }
 
-        // 刪除商品功能
+        // 渲染商品列表
+        function renderProducts(products) {
+            const selectedRegion = regionFilter.value;
+            const keyword = searchInput.value.trim().toLowerCase();
+
+            let filtered = products.filter(p => {
+                const matchRegion = (selectedRegion === '全部' || p.region === selectedRegion);
+                const matchCategory = (currentCategory === '全部' || currentCategory === 'All' || p.category === currentCategory);
+                const matchKeyword = !keyword || (p.title && p.title.toLowerCase().includes(keyword)) || (p.description && p.description.toLowerCase().includes(keyword)) || (p.region && p.region.includes(keyword));
+                return matchRegion && matchCategory && matchKeyword;
+            });
+
+            productCount.textContent = `共 ${filtered.length} 件商品`;
+
+            if (filtered.length > 0) {
+                productList.innerHTML = filtered.map(p => `
+                    <div class="bg-white rounded-3xl shadow-xs border border-slate-200/80 p-4 flex flex-col justify-between hover:shadow-md transition">
+                        <div>
+                            <div class="flex justify-between items-start mb-2 gap-2">
+                                <h4 class="font-bold text-base text-slate-900 line-clamp-1">${p.title}</h4>
+                                <span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded-lg font-semibold whitespace-nowrap">${p.region || '全台'}</span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">${p.category || '其他'}</span>
+                                <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-medium">${p.condition_status || '九成新'}</span>
+                            </div>
+                            <p class="text-emerald-700 font-extrabold text-lg mb-2">NT$ ${p.price}</p>
+                            <p class="text-slate-600 text-xs mb-4 line-clamp-2 leading-relaxed">${p.description}</p>
+                        </div>
+                        <div class="border-t border-slate-100 pt-3 flex justify-between items-center text-xs text-slate-500">
+                            <span class="truncate max-w-[120px]">聯絡：${p.seller_contact}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-400">${new Date(p.created_at).toLocaleDateString()}</span>
+                                <button onclick="deleteProduct('${p.id}')" class="text-rose-400 hover:text-rose-600 font-medium px-1.5 py-0.5 rounded cursor-pointer transition">下架</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                productList.innerHTML = '<p class="text-slate-400 text-sm col-span-full text-center py-12">找不到符合條件的二手好物，趕快來上架第一件吧！</p>';
+            }
+        }
+
+        regionFilter.addEventListener('change', () => renderProducts(allProducts));
+        searchInput.addEventListener('input', () => renderProducts(allProducts));
+
+        async function fetchProducts() {
+            try {
+                const res = await fetch('/api/products');
+                const result = await res.json();
+                if (result.success) {
+                    allProducts = result.data;
+                    renderProducts(allProducts);
+                } else {
+                    productList.innerHTML = '<p class="text-slate-400 text-sm col-span-full text-center py-12">目前沒有任何商品</p>';
+                }
+            } catch (e) {
+                productList.innerHTML = '<p class="text-red-400 text-sm col-span-full text-center py-12">無法載入商品列表</p>';
+            }
+        }
+
         async function deleteProduct(id) {
             if (!confirm('確定要將這件商品從市集下架嗎？')) return;
             try {
@@ -186,61 +438,14 @@
             }
         }
 
-        function renderProducts(products) {
-            const selectedRegion = regionFilter.value;
-            const filtered = selectedRegion === '全部' 
-                ? products 
-                : products.filter(p => p.region === selectedRegion);
-
-            productCount.textContent = `共 ${filtered.length} 件商品`;
-
-            if (filtered.length > 0) {
-                productList.innerHTML = filtered.map(p => `
-                    <div class="bg-white rounded-3xl shadow-xs border border-stone-200/80 p-5 flex flex-col justify-between hover:shadow-md transition">
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-bold text-base text-stone-900">${p.title}</h3>
-                                <span class="bg-amber-50 text-amber-800 text-xs px-2.5 py-1 rounded-xl font-medium">${p.region || '全台灣'}</span>
-                            </div>
-                            <p class="text-amber-700 font-extrabold text-lg mb-2">NT$ ${p.price}</p>
-                            <p class="text-stone-600 text-xs mb-4 line-clamp-3 leading-relaxed">${p.description}</p>
-                        </div>
-                        <div class="border-t border-stone-100 pt-3 flex justify-between items-center text-xs text-stone-500">
-                            <span>聯絡：${p.seller_contact}</span>
-                            <div class="flex items-center gap-2">
-                                <span class="text-stone-400">${new Date(p.created_at).toLocaleDateString()}</span>
-                                <button onclick="deleteProduct('${p.id}')" class="text-rose-400 hover:text-rose-600 font-medium px-1.5 py-0.5 rounded cursor-pointer transition">下架</button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                productList.innerHTML = '<p class="text-stone-400 text-sm col-span-2 text-center py-12">這裡還沒有這個地區的溫馨好物，來上架第一件吧！</p>';
-            }
-        }
-
-        regionFilter.addEventListener('change', () => renderProducts(allProducts));
-
-        async function fetchProducts() {
-            try {
-                const res = await fetch('/api/products');
-                const result = await res.json();
-                if (result.success) {
-                    allProducts = result.data;
-                    renderProducts(allProducts);
-                } else {
-                    productList.innerHTML = '<p class="text-stone-400 text-sm col-span-2 text-center py-8">目前沒有任何商品</p>';
-                }
-            } catch (e) {
-                productList.innerHTML = '<p class="text-red-400 text-sm col-span-2 text-center py-8">無法載入商品列表</p>';
-            }
-        }
-
-        form.addEventListener('submit', async (e) => {
+        uploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const file = imageInput.files[0];
-            const sellerContact = sellerContactInput.value;
+            const category = itemCategory.value;
+            const condition_status = itemCondition.value;
             const region = itemRegion.value;
+            const contact = sellerContact.value;
+
             if (!file) return alert('請選擇圖片');
 
             submitBtn.disabled = true;
@@ -251,12 +456,22 @@
                 const res = await fetch('/api/create-product', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ imageBase64, sellerContact, region })
+                    body: JSON.stringify({ imageBase64, category, condition_status, region, sellerContact: contact })
                 });
-                const result = await res.json();
+
+                // 安全解析檢查（防止 HTML 崩潰）
+                const textResult = await res.text();
+                let result;
+                try {
+                    result = JSON.parse(textResult);
+                } catch (err) {
+                    throw new Error('伺服器回傳格式錯誤（可能是 API 逾時或未設定環境變數）：' + textResult.substring(0, 100));
+                }
+
                 if (result.success) {
-                    alert('上架成功！AI 已為您生成溫馨文案。');
-                    form.reset();
+                    alert('上架成功！AI 已自動幫您生成行情文案。');
+                    uploadForm.reset();
+                    uploadModal.classList.add('hidden');
                     fetchProducts();
                 } else {
                     alert('上架失敗：' + result.error);
