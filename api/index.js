@@ -5,7 +5,6 @@ const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 app.use(cors());
-// 提高限制到 25mb，並確保解析器能處理大型請求
 app.use(express.json({ limit: '25mb' }));
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
@@ -23,7 +22,7 @@ app.post('/api/create-product', async (req, res) => {
             model: 'gemini-2.5-flash',
             contents: [
                 { inlineData: { mimeType: 'image/jpeg', data: base64Data } },
-                '分析此商品圖，僅回傳 JSON: {"title": "名稱", "suggestedPrice": 價格, "description": "簡短介紹"}'
+                '分析此商品圖片，嚴格僅回傳 JSON 格式: {"title": "商品名稱", "suggestedPrice": 數字價格, "description": "簡短介紹"}'
             ]
         });
 
@@ -32,8 +31,11 @@ app.post('/api/create-product', async (req, res) => {
         await supabase.from('products').insert([{ 
             title: aiData.title, 
             price: Number(aiData.suggestedPrice), 
-            description: `${aiData.description}\n\n【補充】${extraDescription || ''}`,
-            category, condition_status, region, seller_contact: sellerContact
+            description: `${aiData.description}\n\n【補充說明】${extraDescription || ''}`,
+            category, 
+            condition_status, 
+            region, 
+            seller_contact: sellerContact
         }]);
 
         res.json({ success: true });
