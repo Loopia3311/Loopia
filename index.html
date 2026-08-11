@@ -10,7 +10,6 @@
     <!-- 頂部導覽列 -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <!-- Logo 與標籤 -->
             <div class="flex items-center justify-between w-full sm:w-auto">
                 <a href="#" id="homeLogo" class="flex items-center gap-2 cursor-pointer">
                     <div class="bg-emerald-600 text-white font-black text-xl px-3 py-1.5 rounded-xl tracking-wider">∞</div>
@@ -25,7 +24,6 @@
                 <span class="absolute right-3 top-2.5 text-slate-400">🔍</span>
             </div>
 
-            <!-- 右側功能按鈕 -->
             <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
                 <button id="openUploadBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2 rounded-full transition shadow-xs cursor-pointer flex items-center gap-1.5">
                     ✨ AI 智慧刊登
@@ -45,7 +43,7 @@
                     真實雲端 AI 視覺辨識 & 全網行情比對引擎 🌍
                 </h2>
                 <p class="text-emerald-100 text-sm sm:text-base leading-relaxed">
-                    拍照後透過後端 AI 模型辨識物件並自動比對網路二手市集售價；完整會員中心支援密碼修改與設定！
+                    拍照或上傳後，AI 自動辨識物件、精準比對市集行情並自動填寫分類與細節！
                 </p>
             </div>
             <button id="bannerUploadBtn" class="bg-white text-emerald-800 hover:bg-emerald-50 font-bold px-6 py-3 rounded-full transition shadow-md whitespace-nowrap cursor-pointer z-10">
@@ -59,32 +57,8 @@
                 <div class="flex items-center gap-2 text-sm font-bold text-slate-700">
                     <span>📍 全地區篩選：</span>
                 </div>
-                <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-                    <select id="regionFilter" class="bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-emerald-800 focus:outline-none cursor-pointer">
-                        <option value="全部">全台灣 (所有縣市)</option>
-                        <option value="基隆市">基隆市</option>
-                        <option value="台北市">台北市</option>
-                        <option value="新北市">新北市</option>
-                        <option value="桃園市">桃園市</option>
-                        <option value="新竹市">新竹市</option>
-                        <option value="新竹縣">新竹縣</option>
-                        <option value="苗栗縣">苗栗縣</option>
-                        <option value="台中市">台中市</option>
-                        <option value="彰化縣">彰化縣</option>
-                        <option value="南投縣">南投縣</option>
-                        <option value="雲林縣">雲林縣</option>
-                        <option value="嘉義市">嘉義市</option>
-                        <option value="嘉義縣">嘉義縣</option>
-                        <option value="台南市">台南市</option>
-                        <option value="高雄市">高雄市</option>
-                        <option value="屏東縣">屏東縣</option>
-                        <option value="宜蘭縣">宜蘭縣</option>
-                        <option value="花蓮縣">花蓮縣</option>
-                        <option value="台東縣">台東縣</option>
-                        <option value="澎湖縣">澎湖縣</option>
-                        <option value="金門縣">金門縣</option>
-                        <option value="連江縣">連江縣</option>
-                    </select>
+                <div class="w-full sm:w-64">
+                    <input type="text" id="regionFilterInput" placeholder="輸入鄉鎮市區或縣市篩選 (例如: 鼓山區)" class="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
             </div>
 
@@ -113,7 +87,7 @@
         </section>
     </main>
 
-    <!-- AI 智慧刊登彈窗 (Modal) -->
+    <!-- AI 智慧刊登彈窗 -->
     <div id="uploadModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto">
         <div class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 my-8">
             <div class="flex justify-between items-center border-b pb-3">
@@ -123,13 +97,14 @@
 
             <form id="uploadForm" class="space-y-4 text-sm">
                 <div>
-                    <label class="block font-medium text-slate-700 mb-1">上傳商品照片 (AI 將自動分析)</label>
-                    <input type="file" id="imageInput" accept="image/*" required class="block w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                    <label class="block font-medium text-slate-700 mb-1">上傳照片或直接使用相機拍照</label>
+                    <!-- 加上 capture="environment" 支援手機直接開啟後鏡頭拍照 -->
+                    <input type="file" id="imageInput" accept="image/*" capture="environment" required class="block w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-medium text-slate-700 mb-1">商品分類</label>
+                        <label class="block font-medium text-slate-700 mb-1">商品分類 (AI 自動判斷)</label>
                         <select id="itemCategory" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                             <option value="手機與3C">手機與3C</option>
                             <option value="家居家具">家居家具</option>
@@ -144,43 +119,25 @@
                     <div>
                         <label class="block font-medium text-slate-700 mb-1">商品狀態</label>
                         <select id="itemCondition" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                            <option value="全新未拆封">✨ 全新未拆封</option>
-                            <option value="幾乎全新 (9成新以上)">💎 幾乎全新 (9成新)</option>
-                            <option value="輕微使用痕跡 (8成新)">📦 輕微使用痕跡 (8成新)</option>
-                            <option value="有明顯使用痕跡">🛠️ 有明顯使用痕跡</option>
+                            <option value="全新未拆封">全新未拆封</option>
+                            <option value="幾乎全新">幾乎全新</option>
+                            <option value="輕微使用痕跡">輕微使用痕跡</option>
+                            <option value="有明顯使用痕跡">有明顯使用痕跡</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block font-medium text-slate-700 mb-1">商品所在地 (自動定位)</label>
+                    <label class="block font-medium text-slate-700 mb-1">刊登地區 (自動精確定位至鄉鎮市區)</label>
                     <div class="flex gap-2">
-                        <select id="itemRegion" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                            <option value="台北市">台北市</option>
-                            <option value="新北市">新北市</option>
-                            <option value="桃園市">桃園市</option>
-                            <option value="台中市">台中市</option>
-                            <option value="台南市">台南市</option>
-                            <option value="高雄市">高雄市</option>
-                            <option value="基隆市">基隆市</option>
-                            <option value="新竹市">新竹市</option>
-                            <option value="新竹縣">新竹縣</option>
-                            <option value="苗栗縣">苗栗縣</option>
-                            <option value="彰化縣">彰化縣</option>
-                            <option value="南投縣">南投縣</option>
-                            <option value="雲林縣">雲林縣</option>
-                            <option value="嘉義市">嘉義市</option>
-                            <option value="嘉義縣">嘉義縣</option>
-                            <option value="屏東縣">屏東縣</option>
-                            <option value="宜蘭縣">宜蘭縣</option>
-                            <option value="花蓮縣">花蓮縣</option>
-                            <option value="台東縣">台東縣</option>
-                            <option value="澎湖縣">澎湖縣</option>
-                            <option value="金門縣">金門縣</option>
-                            <option value="連江縣">連江縣</option>
-                        </select>
-                        <button type="button" id="autoGeoBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-2 rounded-xl whitespace-nowrap cursor-pointer font-medium">📍 自動定位</button>
+                        <input type="text" id="itemRegion" placeholder="例如：高雄市鼓山區" required class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                        <button type="button" id="autoGeoBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-2 rounded-xl whitespace-nowrap cursor-pointer font-medium">📍 重新定位</button>
                     </div>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">補充商品內容 / 瑕疵說明 (可選)</label>
+                    <textarea id="extraDescription" rows="2" placeholder="在此補充 AI 未提到的細節、面交地點或購買年份等..." class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
                 </div>
 
                 <div>
@@ -194,7 +151,7 @@
             </form>
 
             <div id="loading" class="hidden text-center text-xs text-emerald-600 font-bold animate-pulse py-2">
-                🤖 AI 正在辨識物件並比對市集行情中，請稍候約 5 秒...
+                🤖 AI 正在辨識物件、精確比對行情並生成文案中，請稍候約 5 秒...
             </div>
         </div>
     </div>
@@ -257,23 +214,30 @@
         const itemCategory = document.getElementById('itemCategory');
         const itemCondition = document.getElementById('itemCondition');
         const itemRegion = document.getElementById('itemRegion');
+        const extraDescription = document.getElementById('extraDescription');
         const sellerContact = document.getElementById('sellerContact');
         const submitBtn = document.getElementById('submitBtn');
         const loading = document.getElementById('loading');
         
         const productList = document.getElementById('productList');
         const productCount = document.getElementById('productCount');
-        const regionFilter = document.getElementById('regionFilter');
+        const regionFilterInput = document.getElementById('regionFilterInput');
         const searchInput = document.getElementById('searchInput');
         const autoGeoBtn = document.getElementById('autoGeoBtn');
         const categoryBtns = document.querySelectorAll('.category-btn');
 
         let allProducts = [];
-        let currentCategory = 'All';
+        let currentCategory = '全部';
 
         // 彈窗開關控制
-        openUploadBtn.addEventListener('click', () => uploadModal.classList.remove('hidden'));
-        bannerUploadBtn.addEventListener('click', () => uploadModal.classList.remove('hidden'));
+        openUploadBtn.addEventListener('click', () => {
+            uploadModal.classList.remove('hidden');
+            autoDetectLocation();
+        });
+        bannerUploadBtn.addEventListener('click', () => {
+            uploadModal.classList.remove('hidden');
+            autoDetectLocation();
+        });
         closeUploadModal.addEventListener('click', () => uploadModal.classList.add('hidden'));
 
         authBtn.addEventListener('click', () => authModal.classList.remove('hidden'));
@@ -292,57 +256,58 @@
 
         homeLogo.addEventListener('click', (e) => {
             e.preventDefault();
-            regionFilter.value = '全部';
+            regionFilterInput.value = '';
             searchInput.value = '';
-            currentCategory = 'All';
+            currentCategory = '全部';
             updateCategoryUI('全部');
             renderProducts(allProducts);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 自動定位功能
-        autoGeoBtn.addEventListener('click', () => {
+        // 自動定位（精確至鄉鎮市區）
+        async function autoDetectLocation() {
             if (!navigator.geolocation) {
-                return alert('您的瀏覽器不支援自動定位功能');
+                itemRegion.value = '高雄市鼓山區';
+                return;
             }
             autoGeoBtn.textContent = '定位中...';
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                // 簡單根據經緯度判定台北/高雄或直接預設
-                if (lat > 25.0) {
-                    itemRegion.value = '台北市';
-                } else if (lat < 22.7) {
-                    itemRegion.value = '高雄市';
-                } else {
-                    itemRegion.value = '台中市';
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=zh-TW`);
+                    const data = await res.json();
+                    if (data && data.address) {
+                        const city = data.address.city || data.address.county || data.address.state || '高雄市';
+                        const district = data.address.town || data.address.suburb || data.address.district || data.address.village || '鼓山區';
+                        itemRegion.value = `${city}${district}`;
+                    } else {
+                        itemRegion.value = '高雄市鼓山區';
+                    }
+                } catch (e) {
+                    itemRegion.value = '高雄市鼓山區';
                 }
-                autoGeoBtn.textContent = '📍 定位成功！';
-                setTimeout(() => autoGeoBtn.textContent = '📍 自動定位', 2000);
+                autoGeoBtn.textContent = '📍 重新定位';
             }, () => {
-                alert('無法取得您的位置權限，請手動選擇地區。');
-                autoGeoBtn.textContent = '📍 自動定位';
+                itemRegion.value = '高雄市鼓山區';
+                autoGeoBtn.textContent = '📍 重新定位';
             });
-        });
+        }
+
+        autoGeoBtn.addEventListener('click', autoDetectLocation);
 
         // 分類點擊切換
         categoryBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                categoryBtns.forEach(b => {
-                    b.classList.remove('bg-emerald-600', 'text-white', 'font-bold');
-                    b.classList.add('bg-slate-100', 'text-slate-700', 'font-medium');
-                });
-                btn.classList.remove('bg-slate-100', 'text-slate-700', 'font-medium');
-                btn.classList.add('bg-emerald-600', 'text-white', 'font-bold');
-                
+            btn.addEventListener('click', () => {
                 currentCategory = btn.getAttribute('data-category');
+                updateCategoryUI(currentCategory);
                 renderProducts(allProducts);
             });
         });
 
         function updateCategoryUI(catName) {
             categoryBtns.forEach(b => {
-                if (b.getAttribute('data-category') === catName || (catName === '全部' && b.getAttribute('data-category') === '全部')) {
+                if (b.getAttribute('data-category') === catName) {
                     b.classList.remove('bg-slate-100', 'text-slate-700', 'font-medium');
                     b.classList.add('bg-emerald-600', 'text-white', 'font-bold');
                 } else {
@@ -363,13 +328,13 @@
 
         // 渲染商品列表
         function renderProducts(products) {
-            const selectedRegion = regionFilter.value;
+            const regionKeyword = regionFilterInput.value.trim().toLowerCase();
             const keyword = searchInput.value.trim().toLowerCase();
 
             let filtered = products.filter(p => {
-                const matchRegion = (selectedRegion === '全部' || p.region === selectedRegion);
-                const matchCategory = (currentCategory === '全部' || currentCategory === 'All' || p.category === currentCategory);
-                const matchKeyword = !keyword || (p.title && p.title.toLowerCase().includes(keyword)) || (p.description && p.description.toLowerCase().includes(keyword)) || (p.region && p.region.includes(keyword));
+                const matchRegion = !regionKeyword || (p.region && p.region.toLowerCase().includes(regionKeyword));
+                const matchCategory = (currentCategory === '全部' || p.category === currentCategory);
+                const matchKeyword = !keyword || (p.title && p.title.toLowerCase().includes(keyword)) || (p.description && p.description.toLowerCase().includes(keyword)) || (p.region && p.region.toLowerCase().includes(keyword));
                 return matchRegion && matchCategory && matchKeyword;
             });
 
@@ -388,7 +353,7 @@
                                 <span class="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-medium">${p.condition_status || '九成新'}</span>
                             </div>
                             <p class="text-emerald-700 font-extrabold text-lg mb-2">NT$ ${p.price}</p>
-                            <p class="text-slate-600 text-xs mb-4 line-clamp-2 leading-relaxed">${p.description}</p>
+                            <p class="text-slate-600 text-xs mb-4 line-clamp-3 leading-relaxed">${p.description}</p>
                         </div>
                         <div class="border-t border-slate-100 pt-3 flex justify-between items-center text-xs text-slate-500">
                             <span class="truncate max-w-[120px]">聯絡：${p.seller_contact}</span>
@@ -404,7 +369,7 @@
             }
         }
 
-        regionFilter.addEventListener('change', () => renderProducts(allProducts));
+        regionFilterInput.addEventListener('input', () => renderProducts(allProducts));
         searchInput.addEventListener('input', () => renderProducts(allProducts));
 
         async function fetchProducts() {
@@ -444,9 +409,10 @@
             const category = itemCategory.value;
             const condition_status = itemCondition.value;
             const region = itemRegion.value;
+            const extra = extraDescription.value;
             const contact = sellerContact.value;
 
-            if (!file) return alert('請選擇圖片');
+            if (!file) return alert('請選擇或拍攝圖片');
 
             submitBtn.disabled = true;
             loading.classList.remove('hidden');
@@ -456,20 +422,19 @@
                 const res = await fetch('/api/create-product', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ imageBase64, category, condition_status, region, sellerContact: contact })
+                    body: JSON.stringify({ imageBase64, category, condition_status, region, extraDescription: extra, sellerContact: contact })
                 });
 
-                // 安全解析檢查（防止 HTML 崩潰）
                 const textResult = await res.text();
                 let result;
                 try {
                     result = JSON.parse(textResult);
                 } catch (err) {
-                    throw new Error('伺服器回傳格式錯誤（可能是 API 逾時或未設定環境變數）：' + textResult.substring(0, 100));
+                    throw new Error('伺服器回傳格式錯誤（請確認 Vercel API 路由設定）：' + textResult.substring(0, 100));
                 }
 
                 if (result.success) {
-                    alert('上架成功！AI 已自動幫您生成行情文案。');
+                    alert('上架成功！AI 已自動生成行情文案與分類。');
                     uploadForm.reset();
                     uploadModal.classList.add('hidden');
                     fetchProducts();
